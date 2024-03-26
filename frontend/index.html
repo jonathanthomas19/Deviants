@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Velocity Kingdom - Explore Racing Worlds</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('#formula').addEventListener('click', function () {
+                console.log('Navigating to race-track.html');
+                window.location.assign('./race-track.html');
+            });
+            document.querySelector('#street').addEventListener('click', function () {
+                console.log('Navigating to street-track.html');
+                window.location.assign('./street-track.html'); 
+            });
+            document.querySelector('#rally').addEventListener('click', function () {
+                console.log('Navigating to dirt-track.html');
+                window.location.assign('./dirt-track.html'); 
+            });
+            var carEntities = document.querySelectorAll('.car');
+
+            carEntities.forEach(function(carEntity) {
+                carEntity.addEventListener('mouseenter', function() {
+                    var textEntity = document.createElement('a-text');
+                    // Set different values for each car
+                    if (this.id === 'formula') {
+                        textEntity.setAttribute('value', 'Track Race');
+                    } else if (this.id === 'street') {
+                        textEntity.setAttribute('value', 'Street Race');
+                    } else if (this.id === 'rally') {
+                        textEntity.setAttribute('value', 'Rally Race');
+                    }
+                    textEntity.setAttribute('position', '0 1.5 0'); // Adjusted position
+                    this.appendChild(textEntity);
+                });
+
+                carEntity.addEventListener('mouseleave', function() {
+                    var textEntity = this.querySelector('a-text');
+                    if (textEntity) {
+                        textEntity.parentNode.removeChild(textEntity);
+                    }
+                });
+            });
+        });
+        
+    </script>
+</head>
+<body>
+    <a-scene>
+        <!-- Camera with Explicit Cursor for Click -->
+        <a-entity id="user" gltd-model="./assets/models/user.glb" camera look-controls="pointerLockEnabled: true" 
+                  wasd-controls universal-controls kinematic-body position="0 1.6 2">
+            <a-cursor></a-cursor>
+        </a-entity>
+
+        <!-- Sky and Lighting -->
+        <a-sky color="#222"></a-sky>
+        <a-light type="ambient" color="#555"></a-light>
+        <a-light type="directional" position="-1 1 1" intensity="0.5"></a-light>
+
+        <!-- Race Track Models -->
+        <a-entity id="formula" class="car" gltf-model="/static/assets/models/f1.glb" position="-4 0.5 -4.692" scale="1 1 1"></a-entity>
+        <a-entity id="street" class="car" gltf-model="/static/assets/models/bmw_e34.glb" position="0 0 -4.182" scale="1 1 1" rotation="0 180 0"></a-entity>
+        <a-entity id="rally" class="car" gltf-model="/static/assets/models/rally_racing.glb" position="4 -0.038 -4.564" scale="0.6 0.6 0.6"></a-entity>
+
+        <!-- Ground -->
+        <a-plane rotation="-90 0 0" width="30" height="30" src="https://cdn.aframe.io/a-painter/images/floor.jpg"></a-plane>
+        <a-light type="point" position="-3 3 -4.692" intensity="1" color="white"></a-light> 
+        <a-light type="point" position="0 3 -4.182" intensity="1" color="white"></a-light> 
+        <a-light type="point" position="3 3 -4.564" intensity="1" color="white"></a-light>
+    </a-scene>
+</body>
+</html>
